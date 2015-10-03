@@ -82,7 +82,9 @@ class CMSPlugin(six.with_metaclass(PluginModelBase, MP_Node)):
     changed_date = models.DateTimeField(auto_now=True)
     child_plugin_instances = None
     translatable_content_excluded_fields = []
-
+    
+    editable_in_content_mode = models.BooleanField(_("Is editable in content mode."), default=True)
+    
     class Meta:
         app_label = 'cms'
 

@@ -18,6 +18,8 @@ from cms.utils.helpers import reversion_register, normalize_name
 from cms.utils.placeholder import get_placeholder_conf
 from cms.utils.compat.dj import is_installed
 
+from django.utils.translation import ugettext_lazy as _
+
 
 class PluginPool(object):
     def __init__(self):
@@ -99,7 +101,19 @@ class PluginPool(object):
                 "Cannot register %r, a plugin with this name (%r) is already "
                 "registered." % (plugin, plugin_name)
             )
-
+        
+        if plugin.fieldsets:
+            if plugin.fieldsets[-1][0] != _("Advanced (Don't open this!)"):
+                plugin.fieldsets += ((
+                    _("Advanced (Don't open this!)"), {
+                        'classes': ('collapse',),
+                        'fields': (
+                            'editable_in_content_mode',
+                        ),
+                    }
+                ),)
+            
+        
         plugin.value = plugin_name
         self.plugins[plugin_name] = plugin
         from cms.signals import pre_save_plugins, post_delete_plugins, pre_delete_plugins
