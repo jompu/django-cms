@@ -1093,7 +1093,7 @@ class EditModelTemplateTagTest(ToolbarTestBase):
                        char_4="char_4", date_field=datetime.date(2012, 1, 1))
         ex1.save()
         template_text = '''{% extends "base.html" %}
-{% load cms_tags %}{% load url from future %}
+{% load cms_tags %}
 
 {% block content %}
 {% render_model_icon instance "char_1" %}
@@ -1189,7 +1189,7 @@ class EditModelTemplateTagTest(ToolbarTestBase):
         # This template does not render anything as content is saved in a
         # variable and never inserted in the page
         template_text = '''{% extends "base.html" %}
-{% load cms_tags %}{% load url from future %}
+{% load cms_tags %}
 
 {% block content %}
 {% render_model_block instance as rendered_model %}
@@ -1212,7 +1212,7 @@ class EditModelTemplateTagTest(ToolbarTestBase):
         # This template does not render anything as content is saved in a
         # variable and inserted in the page afterwards
         template_text = '''{% extends "base.html" %}
-{% load cms_tags %}{% load url from future %}
+{% load cms_tags %}
 
 {% block content %}
 {% render_model_block instance as rendered_model %}
@@ -1235,11 +1235,11 @@ class EditModelTemplateTagTest(ToolbarTestBase):
                 'placeholderapp', 'example1', ex1.pk))
         self.assertContains(response, '<h1>%s - %s</h1>' % (ex1.char_1, ex1.char_2))
         self.assertContains(response, '<span class="date">%s</span>' % (ex1.date_field.strftime("%Y")))
-        self.assertContains(response, '<a href="%s">successful if</a></div>' % (reverse('detail', args=(ex1.pk,))))
+        self.assertContains(response, '<a href="%s">successful if</a>\n    \n</div>' % (reverse('detail', args=(ex1.pk,))))
 
         # This template is rendered directly
         template_text = '''{% extends "base.html" %}
-{% load cms_tags %}{% load url from future %}
+{% load cms_tags %}
 
 {% block content %}
 {% render_model_block instance %}
@@ -1261,11 +1261,11 @@ class EditModelTemplateTagTest(ToolbarTestBase):
                 'placeholderapp', 'example1', ex1.pk))
         self.assertContains(response, '<h1>%s - %s</h1>' % (ex1.char_1, ex1.char_2))
         self.assertContains(response, '<span class="date">%s</span>' % (ex1.date_field.strftime("%Y")))
-        self.assertContains(response, '<a href="%s">successful if</a></div>' % (reverse('detail', args=(ex1.pk,))))
+        self.assertContains(response, '<a href="%s">successful if</a>\n    \n</div>' % (reverse('detail', args=(ex1.pk,))))
 
         # Changelist check
         template_text = '''{% extends "base.html" %}
-{% load cms_tags %}{% load url from future %}
+{% load cms_tags %}
 
 {% block content %}
 {% render_model_block instance 'changelist' %}
@@ -1666,7 +1666,7 @@ class EditModelTemplateTagTest(ToolbarTestBase):
                 page.pk, page.get_title(language)))
         self.assertContains(
             response,
-            '<div class="cms_plugin cms_plugin-cms-page-changelist-%s cms_render_model cms_render_model_block"><h3>Menu</h3></div>' % page.pk)
+            '<div class="cms_plugin cms_plugin-cms-page-changelist-%s cms_render_model cms_render_model_block">\n        <h3>Menu</h3>' % page.pk)
         self.assertContains(
             response,
             "'edit_plugin': '%s?language=%s&amp;edit_fields=changelist'" % (admin_reverse('cms_page_changelist'), language))
